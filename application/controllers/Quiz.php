@@ -89,14 +89,6 @@ function open_quiz($limit='0'){
 		$this->load->view('footer',$data);
 	}
 	
-		
-		
-	
-	
-	
-	
-	
-	
 	
 		public function edit_quiz($quid)
 	{

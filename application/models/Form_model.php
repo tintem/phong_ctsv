@@ -28,15 +28,21 @@ function listForm()
  * @param  [type] $id [idchitiet student - form]
  * @return [type]     [array or false]
  */
- function detail_form_student($id)
+ function detail_form_students($id)
  {
+ 	 if ($id != null)
 	 $query = $this->db->get_where('v_form_student', array('id' => $id));
+	else $query = $this->db->get_where('v_form_student');
+	return $query->result_array();
 	// echo $this->db->last_query();
- 	if ($query->num_rows()==0) return false;
+	
+ 	/*if ($query->num_rows()==0) return false;
  	$row = $query->row();
  	
  	$row->student_form_detail= $this->db->get_where('etp_form_student_detail', ['form_student_id'=>$id])->result();
- 	return $row;
+ 	return $row;*/
+ 	
+
  }
 
  function update_form_student()
@@ -53,6 +59,25 @@ function listForm()
 	$this->db->set('note', 'CONCAT(note,\',<p>'.$this->input->post('note').'\')', FALSE);
 	$this->db->update('etp_form_student');
   	echo $this->db->last_query();
+ }
+
+ function formEdit($formid)
+ {
+ 	 $query = $this->db->get_where('etp_form', array('formid' => $formid));
+ 	 return $query->row();
+ }
+
+ function formUpdate()
+ {
+ 	 $data = [
+		        'name' => $this->input->post('name'),
+		        'description'  => $this->input->post('description')
+      		];
+
+	$this->db->where('formid', $this->input->post('formid'));
+	$this->db->update('etp_form',$data);
+	//print_r($_POST);
+	echo $this->db->last_query();
  }
 }
 

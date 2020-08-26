@@ -3,7 +3,6 @@ Class User_model extends CI_Model
 {
  function login($username, $password)
  {
- 	//echo "u= $username - p= $password ";exit;
    if($username==''){
    $username=time().rand(1111,9999);
    }
@@ -20,8 +19,7 @@ Class User_model extends CI_Model
     $this -> db -> join('savsoft_group', 'savsoft_users.gid=savsoft_group.gid');
   $this->db->limit(1);
     $query = $this -> db -> get('savsoft_users');
-	
-	//echo $this->db->last_query(); exit;	 
+			 
    if($query -> num_rows() == 1)
    {
 	 $user=$query->row_array();
@@ -412,6 +410,7 @@ function user_group($groupid=""){
 			$userdata['contact_no']=NULL;
 		else
 			$userdata['contact_no']=$this->input->post('contact_no');
+
 		if($this->db->insert('savsoft_users',$userdata)){
 			return true;
 		}else{
@@ -730,12 +729,21 @@ function unlock_user($uid){
  function get_user($uid){
 	 
 	$this->db->where('savsoft_users.uid',$uid);
-	   $this -> db -> join('savsoft_group', 'savsoft_users.gid=savsoft_group.gid');
+	$this -> db -> join('savsoft_group', 'savsoft_users.gid=savsoft_group.gid');
 $query=$this->db->get('savsoft_users');
-	 return $query->row_array();
+	return $query->row_array();
 	 
  }
  
+ function get_faculty_class($uid){
+	 
+	$this->db->where('savsoft_users.uid',$uid);
+	$this -> db -> join('savsoft_class', 'savsoft_users.classid=savsoft_class.classid');
+	$this->db->join('savsoft_faculty','savsoft_faculty.facultyid=savsoft_users.facultyid');
+	$query=$this->db->get('savsoft_users');
+	return $query->row_array();
+	 
+ }
  
  
  function insert_groups(){
@@ -783,6 +791,7 @@ $query=$this->db->get('savsoft_users');
 		foreach($user as $key => $singleuser){
 			if(is_numeric($singleuser[0]))
 			{
+				
 				$insert_data = array(
 				'studentid' => $singleuser[1],
 				'password'=>md5($singleuser[1]),
@@ -796,15 +805,15 @@ $query=$this->db->get('savsoft_users');
 				'note'=>$singleuser[9],
 				'gid'=>$singleuser[10]
 				);
-				//print_r($insert_data);exit;
+			//	print_r($insert_data);exit;
 				$student=$this->get_a_student($insert_data['studentid']);
 				
 				if(count($student)>0)
 				{
 					//Update
 						$student_info=array(
-						//'gid'=>$insert_data['gid']
-						'classid'=>$insert_data['gid'],
+						'gid'=>$insert_data['gid'],
+						'classid'=>$insert_data['classid'],
 						'birthdate'=>$insert_data['birthdate']
 					);
 					$this->db->where('studentid',$insert_data['studentid']);

@@ -5,6 +5,7 @@ class Dashboard extends CI_Controller {
 
 	 function __construct()
 	 {
+
 	   parent::__construct();
 	   $this->load->database();
 	   $this->load->helper('url');
@@ -14,11 +15,7 @@ class Dashboard extends CI_Controller {
 	   $this->load->model("result_model");
 	   $this->load->library("session");
 	   $this->lang->load('basic', $this->config->item('language'));
-		// redirect if not loggedin
-		/*echo "Noi dung session:";print_r($_SESSION);
-		print_r($this->session->userdata('logged_in'));
-		
-		exit;*/
+	
 		if(!$this->session->userdata('logged_in')){
 			redirect('login');
 			
@@ -33,9 +30,8 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
-	//	print_r($logged_in); echo base_url();exit;
+	
 		$data['title']=$this->lang->line('dashboard');
-		
 		$logged_in=$this->session->userdata('logged_in');
 			if($logged_in['su']=='1'){
 				
@@ -50,13 +46,8 @@ class Dashboard extends CI_Controller {
 		$data['num_qbank']=$this->qbank_model->num_qbank();
 		$data['num_quiz']=$this->quiz_model->num_quiz();
 		
-		
 			}
-			
 
-		
-	 
-	 
 		$this->load->view('header',$data);
 		$this->load->view('dashboard',$data);
 		$this->load->view('footer',$data);

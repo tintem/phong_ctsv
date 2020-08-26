@@ -145,10 +145,12 @@
 					</ul>
 			
 				</li>
+				<li><a href="<?php echo site_url('form');?>">Quản lý đơn</a></li>
 				<?php }else 
 				{ ?>    
 				<li><a href="<?php echo site_url('result');?>">Kết quả thi</a></li> 
-			
+				<li><a href="<?php echo site_url('form');?>">Xin đơn</a></li> 
+				<li><a href="<?php echo site_url('etp');?>">Đánh giá rèn luyện</a></li>
 			<?php  
 				}
 				/*if($logged_in['su']==0){
@@ -178,7 +180,8 @@
                 </ul>
               </li>
 			<li><a href="https://ctsv.stu.edu.vn/attendance">Điểm danh</a></li>
-			
+			<li><a href="<?php echo site_url('form');?>">QL Xin đơn</a></li> 
+			<li><a href="<?php echo site_url('etp');?>">QL Đánh giá rèn luyện</a></li>
 							
 			<?php 
 				}

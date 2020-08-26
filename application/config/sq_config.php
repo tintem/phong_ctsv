@@ -4,8 +4,8 @@
 	//	$sq_base_urls='http://phongctsv.fitstu.net/';
 
 		
-		$sq_base_urls='https://ctsv.local//';
-		$sq_base_url='http://ctsv.local//';
+		$sq_base_urls='https://ctsv.local/';
+		$sq_base_url='http://ctsv.local/';
 		$sq_hostname='localhost';
 		$sq_dbname='phongctsv2020';
 		$sq_dbusername='root';

@@ -62,7 +62,7 @@ $logged_in=$this->session->userdata('logged_in');
           </div>
       </div>
       <?php
-      if($cc >= 4){
+      if($cc >= 3){
         $cc=0;
         }else{
         $cc+=1;
@@ -162,7 +162,7 @@ $logged_in=$this->session->userdata('logged_in');
               </div>
                 <!-- /item -->
             <?php 
-            if($cc >= 4){
+            if($cc >= 3){
             $cc=0;
             }else{
             $cc+=1;

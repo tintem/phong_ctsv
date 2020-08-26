@@ -2,13 +2,30 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Form extends CI_Controller {
+	private $logged_in;
+	function __construct()
+	{
+		parent::__construct();
+		if(!$this->session->userdata('logged_in'))
+	 	{
+			redirect('login');
+		}
+		$this->logged_in=$this->session->userdata('logged_in');
+	
+	}
 	
 
 	function index()
 	 {
+	 	
+
 	 	$this->load->model('Form_model');
 	 	$data = $this->Form_model->listForm();
-	 	$this->load->view('form/index', ['data'=>$data]);
+	 	
+	 	if ($this->logged_in['su']=='0')
+	 		$this->load->view('form0/index', ['data'=>$data]);
+	 	if ($this->logged_in['su']=='1')
+	 		$this->load->view('form1/index', ['data'=>$data]); //danh cho su=1
 	 }
 	 /**
 	  * Danh sach sinh vien can xin cac form $id
@@ -18,8 +35,12 @@ class Form extends CI_Controller {
 
 	 	$this->load->model('Form_model');
 	 	$data = $this->Form_model->getdemo(10);
+
 	 	//print_r($data);exit;
-	 	$this->load->view('form/form1', ['data'=>$data]);
+	 	if ($this->logged_in['su']==1)
+	 		$this->load->view('form1/form1', ['data'=>$data]);
+	 	if ($this->logged_in['su']==0)
+	 		$this->load->view('form0/form1', ['data'=>$data]);
 	 }
 	 /**
 	  * demo
@@ -33,7 +54,7 @@ class Form extends CI_Controller {
 	 	$this->load->view('form/form2', ['data'=>$data]);
 	 }
 
-	 function detail_form_student()
+function detail_form_student()
 	 {
 	 	//$id = $this->uri->segment(3);
 	 	$id= $this->input->post('id');
@@ -61,15 +82,18 @@ function formPrints()
 	}
 
 //function detailStudentFormPrint($id)
-function print_form_student($id)
+function print_form_student($id=null)
 {
 	$this->load->model('Form_model');
-	$data = $this->Form_model->detail_form_student($id);
-	$this->load->view('form/Form_detailStudentFormPrint',['data'=>$data]);
+	
+	$data = $this->Form_model->detail_form_students($id);
+
+
+	$this->load->view('form1/Form_detailStudentFormPrint',['datas'=>$data]);
 }
 
 //-------------- QUan ly them - sua - xoa cac loai bieu mau
-	function formNew()
+function formNew()
 	{
 		echo "Tao them form moi";
 	}
@@ -80,11 +104,20 @@ function print_form_student($id)
 
 	function formEdit()
 	{
-		echo "Load sua form";
+		$formid= $this->input->post('formid'); //echo "fid=". $formid;
+		$this->load->model('Form_model');
+	
+		$data = $this->Form_model->formEdit($formid);
+		echo json_encode($data);
 	}
 	function formUpdate()
 	{
-		echo "Form update!";
+		/*echo "Form update!";
+		print_r($_POST);
+*/
+		$this->load->model('Form_model');
+	
+		$data = $this->Form_model->formUpdate();
 	}
 	function formDelete()
 	{

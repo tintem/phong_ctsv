@@ -26,21 +26,20 @@ class Login extends CI_Controller {
 	}
 	public function index()
 	{
-
 		/*if (REQUEST == "external") {
 			return;
 		} */
+		//print_r($_POST);exit;
 		if ($this->protocol()=='https://')
 			redirect($this->config->item('base_urls') .'logins');
 
 		
 
 		//print_r(base_url());exit;
-		//print_r($this->session->userdata('logged_in'));exit;
 		if($this->session->userdata('logged_in'))
 		{
 			$logged_in=$this->session->userdata('logged_in');
-		//print_r($logged_in); exit;
+	
 						
 			if($logged_in['su']=='1'){
 				redirect('dashboard');
@@ -121,7 +120,7 @@ class Login extends CI_Controller {
 		$password=urldecode($p2);
 		}
 		 $status=$this->user_model->login($username,$password);
-		// print_r($status); exit;
+		
 		if($status['status']=='1'){
 			$this->load->helper('url');
 			// row exist fetch userdata
@@ -143,15 +142,18 @@ class Login extends CI_Controller {
 			$user['base_url']=base_url();
 			// creating login cookie
 			$this->session->set_userdata('logged_in', $user);
+			
 			// redirect to dashboard
 			if($user['su']=='1'){
+				
 				$this->session->set_userdata('KCFINDER', array('disabled'=>false));
-				//print_r($user);
-			//echo "<a href='" .base_url()."dashboard'>dashboard</a>";exit;
-			 redirect('dashboard');
+				//print_r($this->session);exit;
+				
+				redirect('dashboard');
 				 
 			}else{
 				$burl=$this->config->item('base_url').'quiz';
+				
 			 header("location:$burl");
 			}
 		}else if($status['status']=='0'){
